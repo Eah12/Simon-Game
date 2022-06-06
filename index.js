@@ -6,10 +6,12 @@ $(document).ready(function() {
   var userClickedPattern = [];
   var gameStarted = false;
   var gameLevel = 0;
+  var keyDownInput = true;
 
   $(document).keydown(function(e) {
     console.log(e.key);
-    if (e.key === ' ' && gameStarted === false) {
+    if (e.key === ' ' && gameStarted === false && keyDownInput === true) {
+      keyDownInput = false;
       $("#level-title").animate({
         opacity: 0
       }, 200);
@@ -26,7 +28,6 @@ $(document).ready(function() {
 
     // color picker
     setTimeout(function() {
-      gameStarted = true;
       // -gen a random num
       var randomNumber = Math.floor(Math.random() * 4);
       // -switch a ranNum to [color]
@@ -36,6 +37,7 @@ $(document).ready(function() {
       // -play sound & animation
       playAnimate(randomChosenColor);
       playSound(randomChosenColor);
+      gameStarted = true;
     }, 1000);
   }
 
@@ -106,6 +108,9 @@ $(document).ready(function() {
   // gameover function
   function gameover() {
     gameStarted = false;
+    gamePattern = [];
+    userClickedPattern = [];
+    gameLevel = 0;
     playSound("wrong");
     $("body").addClass("game-over");
     setTimeout(
@@ -122,7 +127,8 @@ $(document).ready(function() {
     }
     setTimeout(
       function() {
-        location.reload();
+        $("#level-title").text("Press Spacebar to Start");
+        keyDownInput = true;
       }, 3000);
   }
 });
